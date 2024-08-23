@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Convert PDF to Other Formats</h1>
+        <form id="pdfConverterForm" enctype="multipart/form-data">
+            <input type="file" name="pdfFile" id="pdfFile" accept="application/pdf" class="mb-4">
+            <select name="format" id="format" class="mb-4 p-2 border border-gray-300 rounded-lg w-full">
+                <option value="docx">Convert to Word</option>
+                <option value="xlsx">Convert to Excel</option>
+                <option value="jpg">Convert to JPG</option>
+                <option value="png">Convert to PNG</option>
+            </select>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Convert</button>
+        </form>
+        <div id="downloadLink" class="mt-4 hidden">
+            <a href="#" id="convertedFileLink" class="text-blue-500">Download Converted File</a>
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById('pdfConverterForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('pdfFile', document.getElementById('pdfFile').files[0]);
+        formData.append('format', document.getElementById('format').value);
+
+        const response = await fetch('./backend/php/php.php', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            document.getElementById('convertedFileLink').href = result.file_url;
+            document.getElementById('downloadLink').classList.remove('hidden');
+        }
+    });
+</script>
+</html>
