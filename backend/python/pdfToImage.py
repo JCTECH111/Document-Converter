@@ -11,7 +11,7 @@ image_format = sys.argv[3].lower()  # The format, e.g., 'jpg' or 'png'
 os.makedirs(output_folder, exist_ok=True)
 
 # Set path for poppler binaries (Windows only)
-os.environ['PATH'] += r';C:\poppler-24.07.0\Library\bin'  # Adjust this to your poppler path
+# os.environ['PATH'] += r';C:\poppler-24.07.0\Library\bin'  # Adjust this to your poppler path
 
 try:
     # Convert the PDF to images
