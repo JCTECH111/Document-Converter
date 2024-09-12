@@ -79,7 +79,7 @@
     </div>
 </nav>
 <main class="p-8">
-    <h2 class="text-2xl text-blue-500">Convert PDF to an Html file</h2>
+    <h2 class="text-2xl text-blue-500">Convert an Image to a pdf format</h2>
     <div class="mt-6 border-4 border-dashed border-gray-600 p-6 rounded-lg">
         <form action="#" id="form" method="POST" enctype="multipart/form-data" class="space-y-4">
             <div class="flex justify-center">
@@ -103,7 +103,7 @@
     <h2 class="text-2xl text-blue-500">Converting....</h2>
     <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
   </div>
-  <h2 class="text-2xl text-blue-500 px-4" id="pageCount"></h2>
+  <h2 class="text-2xl text-blue-500 px-4 py-2" id="pageCount"></h2>
   <div id="downloadLink" class="mx-4 w-auto flex items-center justify-center hidden bg-blue-700 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
     <a href="#" id="convertedFileLink" class="" download>Download Converted File</a>
 </div>
@@ -111,7 +111,7 @@
 
 
 
-<script src="../javascript/pdf-to-html.js"></script>
+<script src="../javascript/image-to-pdf.js"></script>
 <script src="../javascript/disable_clicks.js"></script>
 </body>
 </html>

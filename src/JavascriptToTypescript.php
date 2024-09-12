@@ -8,6 +8,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Prism.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <!-- Prism.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <!-- Optional: Add support for specific languages (JavaScript in this case) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <!-- Prism.js TypeScript Language Component -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
 </head>
 <style>
     #progressContainer {
@@ -51,6 +59,19 @@
         const mobileMenu = document.getElementById('mobileMenu');
         mobileMenu.classList.toggle('open');
     }
+
+    function copyCode() {
+        const codeText = document.getElementById('code-text').innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            document.getElementById('copyButton').innerText = "Copied"
+            setTimeout(() => {
+                document.getElementById('copyButton').innerText = "Copy"
+
+            }, 3000)
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
 </script>
 
 <body class="bg-gray-900 text-gray-200">
@@ -89,7 +110,7 @@
         </div>
     </nav>
     <main class="p-8">
-        <h2 class="text-2xl text-blue-500">Convert PDF to an Image</h2>
+        <h2 class="text-2xl text-blue-500">Convert Javascript document to Typescript</h2>
         <div class="mt-6 border-4 border-dashed border-gray-600 p-6 rounded-lg">
             <form action="#" id="form" method="POST" enctype="multipart/form-data" class="space-y-4">
                 <div class="flex justify-center">
@@ -108,25 +129,32 @@
         <div id="progressContainer">
             <div id="progressBar">0%</div>
         </div>
+        <div class="relative bg-[#1e1e1e] text-white rounded-lg shadow-lg my-6 overflow-x-auto">
+            <!-- Code Block Header -->
+            <div class="flex justify-between items-center bg-gray-800 px-4 py-2 rounded-t-lg border-b border-gray-700">
+                <span class="text-blue-600  font-semibold text-sm">Tyscript Code</span>
+                <button id="copyButton" onclick="copyCode()"
+                    class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 text-sm rounded-md focus:outline-none">
+                    Copy
+                </button>
+            </div>
+
+            <!-- Code Block Body -->
+            <pre class="p-4 bg-gray-800 text-sm whitespace-pre-wrap md:whitespace-pre">
+                <code id="code-text" class="language-typescript">
+ Code.......
+                </code>
+            </pre>
+        </div>
+
 
     </main>
-    <div id="spinner" class="flex items-center justify-center h-12 hidden">
-        <h2 class="text-2xl text-blue-500">Converting....</h2>
-        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
-    </div>
-    <div id="imageContainer" class="mx-4 md:w-full w-25 mt-4"></div>
-    <div id="pageCount" class="text-blue-500 mt-4"></div>
-
-    <!-- <h2 class="text-2xl text-blue-500 px-4" id="pageCount"></h2> -->
-    <!-- <div id="downloadLink"
-        class="mx-4 w-auto flex items-center justify-center hidden bg-blue-700 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
-        <a href="#" id="convertedFileLink" class="">Download Converted File</a>
-    </div> -->
 
 
 
 
-    <script src="../javascript/pdf-to-image.js"></script>
+
+    <script src="../javascript/js-to-ts.js"></script>
     <script src="../javascript/disable_clicks.js"></script>
 </body>
 

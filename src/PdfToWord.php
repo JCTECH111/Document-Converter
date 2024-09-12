@@ -112,5 +112,6 @@
 
 
 <script src="../javascript/pdf-to-word.js"></script>
+<script src="../javascript/disable_clicks.js"></script>
 </body>
 </html>

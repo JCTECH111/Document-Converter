@@ -10,7 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!file_exists($outputFolder)) {
         mkdir($outputFolder, 0777, true);
     }
-
+    // Validate the uploaded file is an Excel file
+    $fileInfo = pathinfo($_FILES['file']['name']);
+    $extension = strtolower($fileInfo['extension']);
+    
+    if ($extension !== 'pdf') {
+        echo json_encode(['error' => 'Invalid file format. Please upload a Pdf Document.']);
+        exit;
+    }
     // Set up the Python script command
     $command = escapeshellcmd("python ../python/pdfToImage.py " . escapeshellarg($pdfFile) . " " . escapeshellarg($outputFolder) . " " . escapeshellarg($imageFormat));
     $output = shell_exec($command);

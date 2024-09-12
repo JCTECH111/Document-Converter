@@ -69,10 +69,8 @@
             <!-- Hamburger Icon for Mobile -->
             <div class="md:hidden">
                 <button onclick="toggleMenu()" class="text-blue-500 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                     </svg>
                 </button>
             </div>
@@ -89,21 +87,39 @@
         </div>
     </nav>
     <main class="p-8">
-        <h2 class="text-2xl text-blue-500">Convert PDF to an Image</h2>
+        <h2 class="text-2xl text-blue-500">Secure your Pdf file</h2>
         <div class="mt-6 border-4 border-dashed border-gray-600 p-6 rounded-lg">
             <form action="#" id="form" method="POST" enctype="multipart/form-data" class="space-y-4">
                 <div class="flex justify-center">
                     <div class="flex items-center justify-center w-full">
-                        <label id="dropArea"
-                            class="flex flex-col items-center justify-center w-full h-32 border-4 border-dashed border-blue-500 hover:bg-gray-800 hover:border-blue-700 cursor-pointer">
+                        <label id="dropArea" class="flex flex-col items-center justify-center w-full h-32 border-4 border-dashed border-blue-500 hover:bg-gray-800 hover:border-blue-700 cursor-pointer">
                             <!-- Font Awesome Icon -->
                             <i class="fas fa-cloud-upload-alt text-blue-500 text-4xl"></i>
                             <span class="text-blue-500 mt-2">Drag and Drop or Click to Upload</span>
                             <input id="fileInput" type="file" name="file" class="hidden">
+                            <input id="documents" type="text" name="password" class="hidden">
                         </label>
                     </div>
                 </div>
             </form>
+        </div>
+        <div id="urlModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300 ease-out opacity-0 px-4">
+            <!-- Modal Content -->
+            <div class="bg-white p-6 rounded-lg shadow-lg  w-full max-w-md transform transition-transform duration-500 ease-out scale-95 opacity-0">
+                <h2 class="text-2xl text-gray-700 font-semibold mb-4">Enter Document Password</h2>
+                <label for="websiteUrl" class="block text-sm font-medium text-gray-700">Password:</label>
+                <input type="text" id="websiteUrl" name="websiteUrl" placeholder="Password"
+                    class="w-full px-4 py-2 text-blue-500 mt-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+                <div class="flex justify-end">
+                    <button type="button" id="closeModalBtn" class="mr-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-all duration-300">
+                        Cancel
+                    </button>
+                    <button type="submit" id="submitPassword" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300">
+                        Submit
+                    </button>
+                </div>
+            </div>
         </div>
         <div id="progressContainer">
             <div id="progressBar">0%</div>
@@ -114,20 +130,17 @@
         <h2 class="text-2xl text-blue-500">Converting....</h2>
         <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
     </div>
-    <div id="imageContainer" class="mx-4 md:w-full w-25 mt-4"></div>
-    <div id="pageCount" class="text-blue-500 mt-4"></div>
-
-    <!-- <h2 class="text-2xl text-blue-500 px-4" id="pageCount"></h2> -->
-    <!-- <div id="downloadLink"
-        class="mx-4 w-auto flex items-center justify-center hidden bg-blue-700 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
-        <a href="#" id="convertedFileLink" class="">Download Converted File</a>
-    </div> -->
+    <h2 class="text-2xl text-blue-500 px-4 py-2" id="pageCount"></h2>
+    <div id="downloadLink" class="mx-4 w-auto flex items-center justify-center hidden bg-blue-700 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
+        <a href="#" id="convertedFileLink" class="" download>Download Converted File</a>
+    </div>
 
 
 
 
-    <script src="../javascript/pdf-to-image.js"></script>
+    <script src="../javascript/lock-pdf.js"></script>
     <script src="../javascript/disable_clicks.js"></script>
+
 </body>
 
 </html>

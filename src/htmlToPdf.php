@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload</title>
+    <title>Responsive URL Modal with Animation</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -15,6 +15,7 @@
         background: #f3f3f3;
         border-radius: 5px;
         overflow: hidden;
+        width: 100%;
     }
     #progressBar {
         width: 0;
@@ -46,6 +47,9 @@
     }
 </script>
 <body class="bg-gray-900 text-gray-200">
+
+    
+    
 <!-- Navbar -->
 <nav class="bg-gray-800 p-4">
     <div class="container mx-auto flex justify-between items-center">
@@ -78,22 +82,35 @@
         </div>
     </div>
 </nav>
-<main class="p-8">
-    <h2 class="text-2xl text-blue-500">Convert PDF to an Html file</h2>
-    <div class="mt-6 border-4 border-dashed border-gray-600 p-6 rounded-lg">
-        <form action="#" id="form" method="POST" enctype="multipart/form-data" class="space-y-4">
-            <div class="flex justify-center">
-                <div class="flex items-center justify-center w-full">
-                    <label id="dropArea" class="flex flex-col items-center justify-center w-full h-32 border-4 border-dashed border-blue-500 hover:bg-gray-800 hover:border-blue-700 cursor-pointer">
-                        <!-- Font Awesome Icon -->
-                        <i class="fas fa-cloud-upload-alt text-blue-500 text-4xl"></i>
-                        <span class="text-blue-500 mt-2">Drag and Drop or Click to Upload</span>
-                        <input id="fileInput" type="file" name="file" class="hidden">
-                    </label>
-                </div>
+<main class="p-8 flex flex-col gap-3 items-center justify-center">
+    <h2 class="text-2xl text-blue-500">Convert Html/Web Page to a pdf format</h2>
+    <!-- Button to trigger the modal -->
+    <button id="openModalBtn" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300">
+        Open Modal
+    </button>
+
+    <form  method="post" id="formUrl">
+        <!-- Modal Background -->
+    <div id="urlModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300 ease-out opacity-0 px-4">
+        <!-- Modal Content -->
+        <div class="bg-white p-6 rounded-lg shadow-lg  w-full max-w-md transform transition-transform duration-500 ease-out scale-95 opacity-0">
+            <h2 class="text-2xl font-semibold mb-4">Enter Website URL</h2>
+            
+            <label for="websiteUrl" class="block text-sm font-medium text-gray-700">URL:</label>
+            <input type="url" id="websiteUrl" name="websiteUrl" placeholder="https://example.com" 
+                   class="w-full px-4 py-2 text-blue-500 mt-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            
+            <div class="flex justify-end">
+                <button type="button" id="closeModalBtn" class="mr-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-all duration-300">
+                    Cancel
+                </button>
+                <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300">
+                    Submit
+                </button>
             </div>
-        </form>
+        </div>
     </div>
+    </form>
     <div id="progressContainer">
         <div id="progressBar">0%</div>
     </div>
@@ -102,8 +119,8 @@
 <div id="spinner" class="flex items-center justify-center h-12 hidden">
     <h2 class="text-2xl text-blue-500">Converting....</h2>
     <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
-  </div>
-  <h2 class="text-2xl text-blue-500 px-4" id="pageCount"></h2>
+</div>
+  <h2 class="text-2xl text-blue-500 px-4 py-2" id="pageCount"></h2>
   <div id="downloadLink" class="mx-4 w-auto flex items-center justify-center hidden bg-blue-700 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
     <a href="#" id="convertedFileLink" class="" download>Download Converted File</a>
 </div>
@@ -111,7 +128,38 @@
 
 
 
-<script src="../javascript/pdf-to-html.js"></script>
-<script src="../javascript/disable_clicks.js"></script>
+<script src="../javascript/html-to-pdf.js"></script>
+
+    <script>
+        // JavaScript to handle modal visibility and animations
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const urlModal = document.getElementById('urlModal');
+        const modalContent = urlModal.querySelector('div');
+
+        openModalBtn.addEventListener('click', () => {
+            urlModal.classList.remove('hidden');
+            setTimeout(() => {
+                urlModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+            }, 10); // Add small delay for animation
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            urlModal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                urlModal.classList.add('hidden');
+            }, 300); // Match transition duration
+        });
+
+        // Close the modal when clicking outside of the modal content
+        window.addEventListener('click', (e) => {
+            if (e.target === urlModal) {
+                closeModalBtn.click();
+            }
+        });
+    </script>
+    <script src="../javascript/disable_clicks.js"></script>
 </body>
 </html>

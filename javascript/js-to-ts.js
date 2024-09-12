@@ -45,7 +45,7 @@ $(document).ready(function() {
         $('#progressContainer').show();
 
         $.ajax({
-            url: '../backend/php/pdfToHtml.php', // URL to the PHP script that processes the data
+            url: '../backend/php/js-to-ts.php', // URL to the PHP script that processes the data
             type: 'POST',
             data: formData,
             contentType: false, // Important for file uploads
@@ -62,15 +62,11 @@ $(document).ready(function() {
             },
             beforeSend: function() {
                 $('#progressBar').css('background', '#4caf50')
-                $('#spinner').removeClass('hidden')
+                document.getElementById('code-text').textContent = "";
             },
             success: function(response) {
-                var result = JSON.parse(response);
-
-                if (result.success) {
-                    $('#convertedFileLink').attr('href', result.html_file);
-                    $('#downloadLink').removeClass('hidden');
-                    $('#pageCount').text("Your Documents is ready Click here to download 👇 ");
+                if (response) {
+                    typeWriter( response, 30);
                 } else {
                     $('#progressBar').css('background', 'red').text(result.error);
                     console.error('Conversion failed: ', result.error);
@@ -86,4 +82,19 @@ $(document).ready(function() {
             }
         });
     }
+    function typeWriter(text, speed) {
+        let i = 0;
+    
+        function type() {
+            if (i < text.length) {
+                // Append the next character to the text
+                document.getElementById('code-text').textContent += text.charAt(i);
+                Prism.highlightElement(document.getElementById('code-text'));
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+        type();
+    }
+    
 });

@@ -9,6 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!file_exists($outputFolder)) {
         mkdir($outputFolder, 0777, true);
     }
+    // Validate the uploaded file is an Excel file
+    $fileInfo = pathinfo($_FILES['file']['name']);
+    $extension = strtolower($fileInfo['extension']);
+    
+    if ($extension !== 'pdf') {
+        echo json_encode(['error' => 'Invalid file format. Please upload a Pdf Document.']);
+        exit;
+    }
 
     // Define the command to run the Python script
     $command = escapeshellcmd("python ../python/pdfToExcel.py " . escapeshellarg($pdfFile) . " " . escapeshellarg($outputFolder));
@@ -17,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Check if the command output indicates success
     if (trim($output) === "success") {
         // Return the converted file URL
-        $outputFile = $outputFolder . 'output.xlsx';
+        $outputFile = $outputFolder . $_FILES['file']['name'];
         echo json_encode(['success' => true, 'file_url' => '../../files/' . basename($outputFile)]);
     } else {
         // Handle errors

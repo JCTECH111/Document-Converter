@@ -1,5 +1,43 @@
 
 $(document).ready(function() {
+
+        // JavaScript to handle modal visibility and animations
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const urlModal = document.getElementById('urlModal');
+        const modalContent = urlModal.querySelector('div');
+
+            function opeInput(){
+                urlModal.classList.remove('hidden');
+            setTimeout(() => {
+                urlModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+            }, 10); // Add small delay for animation
+            }
+
+        closeModalBtn.addEventListener('click', () => {
+            urlModal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                urlModal.classList.add('hidden');
+            }, 300); // Match transition duration
+        });
+        $("#submitPassword").on('click', () => {
+            // Assign the value from the websiteUrl input to the documents input
+            $("#documents").val($("#websiteUrl").val());
+        
+            // Delay the form submission
+            setTimeout(() => {
+                submitForm();
+            }, 300);
+        });
+        
+
+        // Close the modal when clicking outside of the modal content
+        window.addEventListener('click', (e) => {
+            if (e.target === urlModal) {
+                closeModalBtn.click();
+            }
+        });
     // Handle drag over event
     $('#dropArea').on('dragover', function(event) {
         event.preventDefault();
@@ -34,7 +72,8 @@ $(document).ready(function() {
 
     // Submit form when file input changes (when a file is selected manually)
     $('#fileInput').on('change', function() {
-        submitForm(); // Trigger form submission
+        opeInput()
+        // submitForm(); // Trigger form submission
     });
 
     // Function to submit the form using AJAX
@@ -43,9 +82,10 @@ $(document).ready(function() {
 
         // Show progress bar
         $('#progressContainer').show();
+        closeModalBtn.click();
 
         $.ajax({
-            url: '../backend/php/pdfToHtml.php', // URL to the PHP script that processes the data
+            url: '../backend/php/lockPdf.php', // URL to the PHP script that processes the data
             type: 'POST',
             data: formData,
             contentType: false, // Important for file uploads
@@ -68,9 +108,9 @@ $(document).ready(function() {
                 var result = JSON.parse(response);
 
                 if (result.success) {
-                    $('#convertedFileLink').attr('href', result.html_file);
+                    $('#convertedFileLink').attr('href', result.file_url);
                     $('#downloadLink').removeClass('hidden');
-                    $('#pageCount').text("Your Documents is ready Click here to download 👇 ");
+                    $('#pageCount').text("Your Documents is ready Click here to download 👇 "); // Display the page count
                 } else {
                     $('#progressBar').css('background', 'red').text(result.error);
                     console.error('Conversion failed: ', result.error);

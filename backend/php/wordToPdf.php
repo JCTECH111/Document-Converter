@@ -8,6 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!file_exists($outputPdfDir)) {
         mkdir($outputPdfDir, 0777, true);
     }
+    // Validate the uploaded file is an Excel file
+    $fileInfo = pathinfo($_FILES['file']['name']);
+    $extension = strtolower($fileInfo['extension']);
+    
+    if ($extension !== 'docx') {
+        echo json_encode(['error' => 'Invalid file format. Please upload a Pdf Document.']);
+        exit;
+    }
 
     // Define the new file path with the correct .docx extension
     $docxFile = $outputPdfDir . basename($_FILES['file']['name']);

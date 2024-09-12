@@ -1,21 +1,21 @@
 
-$(document).ready(function() {
+$(document).ready(function () {
     // Handle drag over event
-    $('#dropArea').on('dragover', function(event) {
+    $('#dropArea').on('dragover', function (event) {
         event.preventDefault();
         event.stopPropagation();
         $(this).addClass('bg-gray-800');
     });
 
     // Handle drag leave event
-    $('#dropArea').on('dragleave', function(event) {
+    $('#dropArea').on('dragleave', function (event) {
         event.preventDefault();
         event.stopPropagation();
         $(this).removeClass('bg-gray-800');
     });
 
     // Handle file drop event
-    $('#dropArea').on('drop', function(event) {
+    $('#dropArea').on('drop', function (event) {
         event.preventDefault();
         event.stopPropagation();
         $(this).removeClass('bg-gray-800');
@@ -28,12 +28,12 @@ $(document).ready(function() {
     });
 
     // Handle click to open file dialog
-    $('#dropArea').on('click', function() {
+    $('#dropArea').on('click', function () {
         $('#fileInput').click();
     });
 
     // Submit form when file input changes (when a file is selected manually)
-    $('#fileInput').on('change', function() {
+    $('#fileInput').on('change', function () {
         submitForm(); // Trigger form submission
     });
 
@@ -45,14 +45,14 @@ $(document).ready(function() {
         $('#progressContainer').show();
 
         $.ajax({
-            url: '../backend/php/pdfToHtml.php', // URL to the PHP script that processes the data
+            url: '../backend/php/html-to-xml.php', // URL to the PHP script that processes the data
             type: 'POST',
             data: formData,
             contentType: false, // Important for file uploads
             processData: false, // Important for file uploads
-            xhr: function() {
+            xhr: function () {
                 var xhr = new XMLHttpRequest();
-                xhr.upload.addEventListener('progress', function(event) {
+                xhr.upload.addEventListener('progress', function (event) {
                     if (event.lengthComputable) {
                         var percentComplete = Math.round((event.loaded / event.total) * 100);
                         $('#progressBar').css('width', percentComplete + '%').text(percentComplete + '%');
@@ -60,30 +60,51 @@ $(document).ready(function() {
                 });
                 return xhr;
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 $('#progressBar').css('background', '#4caf50')
-                $('#spinner').removeClass('hidden')
+                document.getElementById('code-text').textContent = "";
             },
-            success: function(response) {
-                var result = JSON.parse(response);
-
-                if (result.success) {
-                    $('#convertedFileLink').attr('href', result.html_file);
-                    $('#downloadLink').removeClass('hidden');
-                    $('#pageCount').text("Your Documents is ready Click here to download 👇 ");
+            success: function (response) {
+                if (response) {
+                    typeWriter(response, 10);
                 } else {
                     $('#progressBar').css('background', 'red').text(result.error);
                     console.error('Conversion failed: ', result.error);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Request failed:', status, error);
                 $('#progressBar').css('background', 'red').text('Error: ' + error);
             },
-            complete: function() {
+            complete: function () {
                 // Hide progress bar after completion
                 $('#spinner').addClass('hidden')
             }
         });
     }
+
+    function typeWriter(text, speed) {
+        let i = 0;
+
+        function type() {
+            if (i < text.length) {
+                // Append the next character to the text
+                document.getElementById('code-text').textContent += text.charAt(i);
+                Prism.highlightElement(document.getElementById('code-text'));
+                // Call this function whenever you need to scroll to the bottom
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+        scrollToBottom();
+        type();
+    }
+    function scrollToBottom() {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth' // Smooth scrolling behavior
+        });
+    }
+
+
 });

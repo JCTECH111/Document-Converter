@@ -45,7 +45,7 @@ $(document).ready(function() {
         $('#progressContainer').show();
 
         $.ajax({
-            url: '../backend/php/pdfToHtml.php', // URL to the PHP script that processes the data
+            url: '../backend/php/imageToPdf.php', // URL to the PHP script that processes the data
             type: 'POST',
             data: formData,
             contentType: false, // Important for file uploads
@@ -68,9 +68,9 @@ $(document).ready(function() {
                 var result = JSON.parse(response);
 
                 if (result.success) {
-                    $('#convertedFileLink').attr('href', result.html_file);
+                    $('#convertedFileLink').attr('href', result.file_url);
                     $('#downloadLink').removeClass('hidden');
-                    $('#pageCount').text("Your Documents is ready Click here to download 👇 ");
+                    $('#pageCount').text("Your Documents is ready Click here to download 👇 "); // Display the page count
                 } else {
                     $('#progressBar').css('background', 'red').text(result.error);
                     console.error('Conversion failed: ', result.error);

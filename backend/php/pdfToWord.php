@@ -11,12 +11,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mkdir($outputFolder, 0777, true);
     }
 
+    // Validate the uploaded file is an Excel file
+    $fileInfo = pathinfo($_FILES['file']['name']);
+    $extension = strtolower($fileInfo['extension']);
+    
+    if ($extension !== 'pdf') {
+        echo json_encode(['error' => 'Invalid file format. Please upload a Pdf Document.']);
+        exit;
+    }
     // Define the output file path
     $outputFile = $outputFolder . 'output.' . $format;
 
     // Get the absolute path of the PDF file
     $pdfFilePath = realpath($pdfFile);
-
+    
     // Set up the Python script command
     $command = escapeshellcmd("python ../python/pdfToWord.py " . escapeshellarg($pdfFilePath) . " " . escapeshellarg($format) . " " . escapeshellarg($outputFolder));
     $output = shell_exec($command);
